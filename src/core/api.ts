@@ -7,10 +7,10 @@ export class NginxAPI {
 	async login() {
 		const res = await this.manager.request<TokenResponse>({
 			method: 'POST',
-			endpoint: this.manager.qp('/auth/login'),
+			endpoint: this.manager.qp('/tokens'),
 			body: {
 				identity: this.manager.credentials.username,
-				password: this.manager.credentials.password,
+				secret: this.manager.credentials.password,
 			},
 		});
 

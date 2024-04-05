@@ -16,7 +16,7 @@ export class NginxManager {
 
 		this.axiosInstance = axios.create({ baseURL: url.replace(/\/$/, '').endsWith('/api') ? url : url + '/api' });
 		this.axiosInstance.interceptors.request.use(async (config) => {
-			if (this.token === null || this.expiresAt === null || Date.now() >= this.expiresAt) {
+			if ((this.token === null || this.expiresAt === null || Date.now() >= this.expiresAt) && !config.url?.includes('/tokens')) {
 				await this.api.login();
 				if (config.headers.Authorization) config.headers.Authorization = `Bearer ${this.token}`;
 			}
@@ -35,6 +35,7 @@ export class NginxManager {
 		endpoint: string; body?: T; auth?: boolean;
 	}) {
 		return await this.axiosInstance.request<O>({
+			url: data.endpoint,
 			method: data.method,
 			data: data.body ? JSON.stringify(data.body) : undefined,
 			headers: {
@@ -42,12 +43,13 @@ export class NginxManager {
 				...(data.auth ? { 'Authorization': `Bearer ${this.token}` } : {}),
 			},
 		}).then((res) => res.data).catch((error: AxiosError) => {
-			throw new Error(this.readableError(error.response?.data || error));
+			throw new Error(this.readableError(error));
 		});
 	}
 
 	private readableError(error: unknown) {
-		if (error instanceof Error) return error.message;
+		if (error instanceof AxiosError) return error.response?.data?.message || error.message;
+		else if (error instanceof Error) return error.message;
 		else if (typeof error === 'string') return error;
 		else return 'Unknown error.';
 	}
