@@ -1,0 +1,47 @@
+{
+	"version": "1.0.0",
+	"name": "nginx-backup",
+	"author": "Digital39999",
+	"scripts": {
+		"ts": "pnpm install typescript --save-dev -g",
+		"init": "pnpm install && pnpm run build",
+		"build": "tsc --build",
+		"watch": "tsc --watch",
+		"lint": "eslint . --ext .ts",
+		"test": "npx ts-node test/index.ts",
+		"updates": "pnpm npm-check-updates -i --format group"
+	},
+	"bin": {
+    	"nginx-backup": "./dist/cli.js"
+  	},
+	"repository": "https://github.com/Digital39999/NginxProxyManagerBackup",
+	"license": "MIT",
+	"keywords": [
+		"nginx",
+		"proxy",
+		"api",
+		"npm",
+		"backup",
+		"npm-api",
+		"manager",
+		"nginx-proxy-manager",
+		"nginx-proxy-manager-api",
+		"backup-nginx-proxy-manager",
+		"backup-nginx-proxy-manager-api"
+	],
+	"devDependencies": {
+		"@types/node": "20.12.4",
+		"@typescript-eslint/eslint-plugin": "7.5.0",
+		"@typescript-eslint/parser": "7.5.0",
+		"eslint": "8.57.0",
+		"ts-node": "^10.9.2"
+	},
+	"engines": {
+		"node": ">=18.4.0",
+		"typescript": "5.5.4"
+	},
+	"dependencies": {
+		"axios": "^1.7.5",
+		"commander": "^12.1.0"
+	}
+}
