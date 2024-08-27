@@ -14,8 +14,6 @@ export default class NginxAPI {
 			},
 		});
 
-		console.log(res);
-
 		this.manager.token = res.token;
 		this.manager.expiresAt = res.expiresAt;
 	}
